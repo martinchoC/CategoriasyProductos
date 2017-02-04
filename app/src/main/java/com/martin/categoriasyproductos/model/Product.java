@@ -34,4 +34,35 @@ public class Product {
         return (mStock != "0");
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String getPrice() {
+        return mPrice;
+    }
+
+    public String getStock() {
+        return mStock;
+    }
+
+    public String getCreationDate() {
+        return mCreationDate;
+    }
+
+    public Category getCategory() {
+        return mCategory;
+    }
+
+    public String getExpirationDate() {
+        return mExpirationDate;
+    }
+
+    public void setPrice(String price) {
+        mPrice = price;
+    }
+
+    public void setCategory(Category category) {
+        mCategory = category;
+    }
 }

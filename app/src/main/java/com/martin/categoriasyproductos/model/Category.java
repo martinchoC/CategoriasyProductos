@@ -22,6 +22,10 @@ public class Category {
         return mTitle;
     }
 
+    public String getID() {
+        return mID;
+    }
+
     public void setTitle(String title) {
         mTitle = title;
     }
