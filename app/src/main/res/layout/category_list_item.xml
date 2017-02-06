@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/arrowLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/categoryNameTextView"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            tools:text="Categoría"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sumProductsLabel"
+            android:layout_below="@+id/categoryNameTextView"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/darker_gray"
+            tools:text="Stock"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/arrowLayout"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="39dp"
+            android:id="@+id/arrowImageView"
+            android:src="@drawable/ic_keyboard_arrow_right_black"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"/>
+    </LinearLayout>
+
+</RelativeLayout>

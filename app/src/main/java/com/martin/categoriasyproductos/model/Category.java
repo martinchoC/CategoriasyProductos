@@ -1,6 +1,6 @@
 package com.martin.categoriasyproductos.model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by MartinC on 3/2/2017.
@@ -10,12 +10,13 @@ public class Category {
 
     public String mID;
     public String mTitle;
-    public LinkedList<Product> mProducts;
+    public ArrayList<Product> mProducts;
 
     //constructor
     public Category(String id, String title){
         this.mID = id;
         this.mTitle = title;
+        mProducts = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -26,12 +27,8 @@ public class Category {
         return mID;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
-    }
-
     public void addProduct (Product product){
-
+        mProducts.add(product);
     }
 
     public void removeProduct (Product product){

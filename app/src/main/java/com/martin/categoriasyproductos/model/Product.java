@@ -6,18 +6,18 @@ import java.util.Calendar;
 /**
  * Created by MartinC on 3/2/2017.
  */
-public class Product {
+public class Product<A,B> {
 
     public String mID;
     public String mTitle;
-    public String mPrice;
-    public String mStock;
+    public A mPrice;
+    public B mStock;
     public Category mCategory;
     public String mCreationDate;
     public String mExpirationDate;
 
     //constructor
-    public Product(String id, String title, String stock, String creationDate, String expirationDate){
+    public Product(String id, String title, B stock, String creationDate, String expirationDate){
         this.mID = id;
         this.mTitle = title;
         this.mStock = stock;
@@ -38,11 +38,11 @@ public class Product {
         return mTitle;
     }
 
-    public String getPrice() {
+    public A getPrice() {
         return mPrice;
     }
 
-    public String getStock() {
+    public B getStock() {
         return mStock;
     }
 
@@ -58,7 +58,7 @@ public class Product {
         return mExpirationDate;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(A price) {
         mPrice = price;
     }
 
