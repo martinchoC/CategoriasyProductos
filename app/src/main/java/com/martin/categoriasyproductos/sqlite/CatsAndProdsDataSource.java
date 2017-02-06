@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.widget.Toast;
 
 import com.martin.categoriasyproductos.model.Category;
 import com.martin.categoriasyproductos.model.Product;
+import com.martin.categoriasyproductos.ui.CategoriesActivity;
 
 import java.util.ArrayList;
 
@@ -109,17 +111,32 @@ public class CatsAndProdsDataSource {
         return cursor.getString(columnIndex);
     }
 
-    public void createCategory(Category category) {
+    public void createCategory(Context context,Category category) {
         SQLiteDatabase database = open();
         database.beginTransaction();
-        ContentValues CategoryValues = new ContentValues();
-        CategoryValues.put(CatsAndProdsSQLiteHelper.COLUMN_CATEGORY_TITLE, category.getTitle());
-        long categoryID = database.insert(CatsAndProdsSQLiteHelper.CATEGORIES_TABLE, null, CategoryValues);
-        database.setTransactionSuccessful();
+        Cursor resultSet=database.rawQuery("select TITLE from CATEGORIES where TITLE = '"+category.getTitle()+"'",null);
+        if(resultSet.getCount() == 0) {
+            ContentValues CategoryValues = new ContentValues();
+            CategoryValues.put(CatsAndProdsSQLiteHelper.COLUMN_CATEGORY_TITLE, category.getTitle());
+            database.insert(CatsAndProdsSQLiteHelper.CATEGORIES_TABLE, null, CategoryValues);
+        }
         database.endTransaction();
         close(database);
     }
 
+    public Category findCategory(String idCategory){
+        SQLiteDatabase database = open();
+        database.beginTransaction();
+        Cursor resultSet = database.rawQuery("select TITLE from CATEGORIES where ID = '"+idCategory+"'",null);
+        String title = resultSet.getString(0);
+        database.setTransactionSuccessful();
+        database.endTransaction();
+        close(database);
+        Category category = new Category(idCategory,title);
+        return category;
+    }
+
+/*
     public void createProduct(Product product) {
         SQLiteDatabase database = open();
         database.beginTransaction();
@@ -136,7 +153,7 @@ public class CatsAndProdsDataSource {
         database.endTransaction();
         close(database);
     }
-
+*/
 }
 
 

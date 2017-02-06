@@ -31,7 +31,9 @@ public class Category {
         mProducts.add(product);
     }
 
-    public void removeProduct (Product product){
+    public void removeProduct (Product product){ }
 
+    public ArrayList<Product> getProducts(){
+        return mProducts;
     }
 }

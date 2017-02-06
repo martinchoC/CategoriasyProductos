@@ -1,7 +1,6 @@
 package com.martin.categoriasyproductos.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,72 +9,67 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.martin.categoriasyproductos.R;
-import com.martin.categoriasyproductos.model.Category;
-import com.martin.categoriasyproductos.ui.DetailedProductActivity;
+import com.martin.categoriasyproductos.model.Product;
 
 /**
- * Created by MartinC on 4/2/2017.
+ * Created by MartinC on 6/2/2017.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
-    private Category[] mCategories;
+    private Product[] mProducts;
     protected Context mContext;
 
-    public CategoryAdapter(Context context, Category[] categories) {
-        mCategories = categories;
+    public ProductAdapter(Context context, Product[] products) {
+        mProducts = products;
         mContext = context;
     }
 
     @Override
     public int getItemCount() {
-        return mCategories.length;
+        return mProducts.length;
     }
 
     public Object getItem(int position) {
-        return mCategories[position];
+        return mProducts[position];
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CategoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_list_item, null);
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView,mContext);
+        CategoryAdapter.ViewHolder viewHolder = new CategoryAdapter.ViewHolder(itemLayoutView,mContext);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(CategoryAdapter.ViewHolder viewHolder, int position) {
 
         //used to get data from your itemsData at this position
         //used to replace the contents of the view with that itemsData
-        viewHolder.categoryLabel.setText(mCategories[position].getTitle());
-        viewHolder.priceProductLabel.setText("Contiene XX productos");
-        viewHolder.id = mCategories[position].getID();
+        viewHolder.categoryLabel.setText(mProducts[position].getTitle());
+        viewHolder.priceProductLabel.setText(mProducts[position].getPrice());
+        viewHolder.id = mProducts[position].getID();
     }
 
     // inner class to hold a reference to each item of RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView categoryLabel;
-        TextView priceProductLabel;
+        TextView sumProductsLabel;
         String id;
 
         public ViewHolder(View itemLayoutView, final Context context) {
             super(itemLayoutView);
             categoryLabel = (TextView) itemLayoutView.findViewById(R.id.categoryNameTextView);
-            priceProductLabel = (TextView) itemLayoutView.findViewById(R.id.sumProductsLabel);
+            sumProductsLabel = (TextView) itemLayoutView.findViewById(R.id.sumProductsLabel);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context,"clicked="+ id,Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, DetailedProductActivity.class);
-                    intent.putExtra("IDCATEGORY",id);
-                    context.startActivity(intent);
                 }
             });
         }
 
     }
-
 }

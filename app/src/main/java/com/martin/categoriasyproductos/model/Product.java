@@ -10,19 +10,23 @@ public class Product<A,B> {
 
     public String mID;
     public String mTitle;
-    public A mPrice;
-    public B mStock;
+    public String mPrice;
+    public String mStock;
     public Category mCategory;
     public String mCreationDate;
     public String mExpirationDate;
 
     //constructor
-    public Product(String id, String title, B stock, String creationDate, String expirationDate){
+    public Product(String id, String title, String stock, String creationDate, String expirationDate){
         this.mID = id;
         this.mTitle = title;
         this.mStock = stock;
         this.mCreationDate = creationDate;
         this.mExpirationDate = expirationDate;
+    }
+
+    public String getID(){
+        return mID;
     }
 
     public boolean isExpired(){
@@ -38,11 +42,11 @@ public class Product<A,B> {
         return mTitle;
     }
 
-    public A getPrice() {
+    public String getPrice() {
         return mPrice;
     }
 
-    public B getStock() {
+    public String getStock() {
         return mStock;
     }
 
@@ -58,7 +62,7 @@ public class Product<A,B> {
         return mExpirationDate;
     }
 
-    public void setPrice(A price) {
+    public void setPrice(String price) {
         mPrice = price;
     }
 

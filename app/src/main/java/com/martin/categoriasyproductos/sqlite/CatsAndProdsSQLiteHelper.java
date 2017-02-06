@@ -20,7 +20,7 @@ public class CatsAndProdsSQLiteHelper extends SQLiteOpenHelper  {
 
     private static String CREATE_CATEGORIES =
                                                 "CREATE TABLE " + CATEGORIES_TABLE +
-                                                "(" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                "(" + BaseColumns._ID + " TEXT PRIMARY KEY AUTOINCREMENT," +
                                                 COLUMN_CATEGORY_TITLE + " TEXT)";
 
     //Products Table functionality
@@ -36,9 +36,9 @@ public class CatsAndProdsSQLiteHelper extends SQLiteOpenHelper  {
                                                 "CREATE TABLE " + PRODUCTS_TABLE + " (" +
                                                 BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                 COLUMN_PRODUCT_TITLE + " TEXT, " +
-                                                COLUMN_PRODUCT_PRICE + " DOUBLE, " +
-                                                COLUMN_PRODUCT_STOCK + " INTEGER, " +
-                                                COLUMN_FOREIGN_KEY_CATEGORY + " INTEGER, " +
+                                                COLUMN_PRODUCT_PRICE + " TEXT, " +
+                                                COLUMN_PRODUCT_STOCK + " TEXT, " +
+                                                COLUMN_FOREIGN_KEY_CATEGORY + " TEXT, " +
                                                 COLUMN_PRODUCT_CREATION + " DATE, " +
                                                 COLUMN_PRODUCT_EXPIRATION + " DATE, " +
                                                 "FOREIGN KEY(" + COLUMN_FOREIGN_KEY_CATEGORY + ") REFERENCES CATEGORIES(_ID))";
