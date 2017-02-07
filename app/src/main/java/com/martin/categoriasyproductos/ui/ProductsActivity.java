@@ -110,4 +110,11 @@ public class ProductsActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this,CategoriesActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

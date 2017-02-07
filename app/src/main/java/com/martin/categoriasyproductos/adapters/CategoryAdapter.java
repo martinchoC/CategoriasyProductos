@@ -1,5 +1,6 @@
 package com.martin.categoriasyproductos.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -52,7 +53,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         //used to get data from your itemsData at this position
         //used to replace the contents of the view with that itemsData
         viewHolder.categoryLabel.setText(mCategories[position].getTitle());
-        viewHolder.priceProductLabel.setText("Contiene XX productos");
+        viewHolder.priceProductLabel.setText("Contains "+mCategories[position].getProducts().size()+" products");
         viewHolder.id = mCategories[position].getID();
     }
 
@@ -71,11 +72,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ProductsActivity.class);
                     intent.putExtra("IDCATEGORY",id);
+                    ((Activity)context).finish();
                     context.startActivity(intent);
                 }
             });
         }
-
     }
 
 }

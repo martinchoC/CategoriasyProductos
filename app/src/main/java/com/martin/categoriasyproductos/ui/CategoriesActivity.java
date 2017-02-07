@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 public class CategoriesActivity extends AppCompatActivity {
 
     private Category[] mCategories;
+    private DatabaseOpenHelper myDbHelper;
 
     @BindView(R.id.recycler_view_categories) RecyclerView mRecyclerView;
 
@@ -30,7 +31,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        DatabaseOpenHelper myDbHelper = new DatabaseOpenHelper(this);
+        myDbHelper = new DatabaseOpenHelper(this);
         try {
             // check if database exists in app path, if not copy it from assets
             myDbHelper.create();
@@ -47,6 +48,9 @@ public class CategoriesActivity extends AppCompatActivity {
         }
 
         ArrayList <Category> categoryArrayList = myDbHelper.readCategories();
+        for(Category category: categoryArrayList){
+            category.setProducts(myDbHelper.readProducts(category.getID()));
+        }
         mCategories = new Category[categoryArrayList.size()];
         mCategories = categoryArrayList.toArray(mCategories);
 
@@ -61,4 +65,5 @@ public class CategoriesActivity extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true); //THIS HELPS WITH PERFORMANCE
     }
+
 }

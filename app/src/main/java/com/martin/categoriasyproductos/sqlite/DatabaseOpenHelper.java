@@ -265,6 +265,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         }
         return categories;
     }
+
     // retrieves all categories
     public Cursor getAllCategories() {
         return database.query(TABLE_CATEGORIES, new String[] { COLUMN_ID,
@@ -277,6 +278,23 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         int columnIndex = cursor.getColumnIndex(columnName);
         return cursor.getString(columnIndex);
     }
+
+    /*
+    //returns the number of products of a category
+    public Product getNumberOfProducts(String productId){
+        Cursor cursor = getCursorProduct(productId);
+        Product product = null;
+        if(cursor.getCount() != 0) {
+            product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID),
+                    getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE),
+                    getStringFromColumnName(cursor, COLUMN_PRODUCT_STOCK),
+                    getStringFromColumnName(cursor, COLUMN_PRODUCT_CREATION),
+                    getStringFromColumnName(cursor, COLUMN_PRODUCT_EXPIRATION));
+            product.setPrice(getStringFromColumnName(cursor, COLUMN_PRODUCT_PRICE));
+        }while(cursor.moveToNext());
+        return product;
+    }
+    */
 
     @Override
     public void onCreate(SQLiteDatabase arg0) {

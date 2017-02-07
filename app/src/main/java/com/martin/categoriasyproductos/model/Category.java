@@ -36,4 +36,8 @@ public class Category {
     public ArrayList<Product> getProducts(){
         return mProducts;
     }
+
+    public void setProducts (ArrayList<Product> products){
+        mProducts = products;
+    }
 }
