@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.martin.categoriasyproductos.R;
 import com.martin.categoriasyproductos.model.Category;
 import com.martin.categoriasyproductos.ui.DetailedProductActivity;
+import com.martin.categoriasyproductos.ui.ProductsActivity;
 
 /**
  * Created by MartinC on 4/2/2017.
@@ -68,8 +69,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,"clicked="+ id,Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, DetailedProductActivity.class);
+                    Intent intent = new Intent(context, ProductsActivity.class);
                     intent.putExtra("IDCATEGORY",id);
                     context.startActivity(intent);
                 }

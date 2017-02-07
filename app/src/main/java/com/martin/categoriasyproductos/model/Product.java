@@ -6,13 +6,12 @@ import java.util.Calendar;
 /**
  * Created by MartinC on 3/2/2017.
  */
-public class Product<A,B> {
+public class Product {
 
     public String mID;
     public String mTitle;
     public String mPrice;
     public String mStock;
-    public Category mCategory;
     public String mCreationDate;
     public String mExpirationDate;
 
@@ -54,10 +53,6 @@ public class Product<A,B> {
         return mCreationDate;
     }
 
-    public Category getCategory() {
-        return mCategory;
-    }
-
     public String getExpirationDate() {
         return mExpirationDate;
     }
@@ -66,7 +61,4 @@ public class Product<A,B> {
         mPrice = price;
     }
 
-    public void setCategory(Category category) {
-        mCategory = category;
-    }
 }
