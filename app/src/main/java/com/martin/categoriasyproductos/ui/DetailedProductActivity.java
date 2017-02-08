@@ -5,14 +5,18 @@ import com.martin.categoriasyproductos.model.Product;
 import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -64,17 +68,26 @@ public class DetailedProductActivity extends AppCompatActivity {
             throw sqle;
         }
 
-        mCreation.setShowSoftInputOnFocus(false);
+        hideKeyboard(mCreation);
+        //mCreation.setShowSoftInputOnFocus(false);
         dateClickListener(mCreation);
 
-
-        mExpiration.setShowSoftInputOnFocus(false);
+        hideKeyboard(mExpiration);
+       // mExpiration.setShowSoftInputOnFocus(false);
         dateClickListener(mExpiration);
 
         if(mNewProduct.equals("false")){
             Product product = myDbHelper.getProduct(mProductID);
             populateFields(product);
         }
+    }
+
+    private void hideKeyboard(EditText editText){
+        editText.setInputType(InputType.TYPE_NULL);
+        editText.setShowSoftInputOnFocus(false);
+        editText.requestFocus();
+        InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        mgr.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
     }
 
     private void populateFields(Product product) {
