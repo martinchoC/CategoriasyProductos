@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Categorias y Productos</string>
-    <string name="title_activity_products">ProductsActivity</string>
+    <string name="app_name">Categories and products</string>
+    <string name="title_activity_products">Products</string>
+    <string name="title_detailed_activity">Detailed product</string>
     <string name="action_filter">Filter</string>
     <string name="action_add">Add</string>
 </resources>

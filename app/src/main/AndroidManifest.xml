@@ -20,7 +20,8 @@
             android:label="@string/title_activity_products"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ui.DetailedProductActivity">
+        <activity android:name=".ui.DetailedProductActivity"
+            android:label="@string/title_detailed_activity">
         </activity>
     </application>
 
