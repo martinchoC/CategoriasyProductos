@@ -1,4 +1,4 @@
-# CategoriasyProductos
+# Categories and Products
 A Tictapps test project
 
 The application begins displaying a list of categories containing products people use in their daily life. Each Category shows its name

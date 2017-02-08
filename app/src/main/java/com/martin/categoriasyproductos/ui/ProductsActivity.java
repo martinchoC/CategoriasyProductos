@@ -121,7 +121,7 @@ public class ProductsActivity extends AppCompatActivity {
     private void showOptionsFilter(){
         final AlertDialog.Builder UnitSelection = new AlertDialog.Builder(this);
         UnitSelection.setTitle("Select filter");
-        final String [] options = new String[] {"Expired products","Products available","Products created in the last 90 days"};
+        final String [] options = new String[] {"Expired products","Products with stock","Products created in the last 90 days"};
         UnitSelection.setSingleChoiceItems(options, selectionChosen, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Toast.makeText(getApplicationContext(), options[item], Toast.LENGTH_SHORT).show();
