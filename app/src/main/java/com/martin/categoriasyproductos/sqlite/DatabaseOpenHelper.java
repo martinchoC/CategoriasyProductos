@@ -127,21 +127,20 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         myInput.close();
     }
 
-    /** open the database */
+    // open the database
     public void open() throws SQLException {
         String myPath = DATABASE_PATH + DATABASE_NAME;
         database = SQLiteDatabase.openDatabase(myPath, null,
                 SQLiteDatabase.OPEN_READWRITE);
     }
 
-    /** close the database */
+    // close the database
     @Override
     public synchronized void close() {
         if (database != null)
             database.close();
         super.close();
     }
-
 
     // insert a product into the product table
     public void createProduct(Product product, String categoryId) {
@@ -282,18 +281,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private String getStringFromColumnName(Cursor cursor, String columnName) {
         int columnIndex = cursor.getColumnIndex(columnName);
         return cursor.getString(columnIndex);
-    }
-
-    //returns the string contained in a column row
-    private Integer getIntFromColumnName(Cursor cursor, String columnName) {
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return Integer.valueOf(cursor.getInt(columnIndex));
-    }
-
-    //returns the float contained in a column row
-    private Float getFloatFromColumnName(Cursor cursor, String columnName) {
-        int columnIndex = cursor.getColumnIndex(columnName);
-        return new Float(cursor.getFloat(columnIndex));
     }
 
     @Override

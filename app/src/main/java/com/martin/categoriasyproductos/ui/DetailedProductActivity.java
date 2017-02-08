@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -69,11 +68,9 @@ public class DetailedProductActivity extends AppCompatActivity {
         }
 
         hideKeyboard(mCreation);
-        //mCreation.setShowSoftInputOnFocus(false);
         dateClickListener(mCreation);
 
         hideKeyboard(mExpiration);
-       // mExpiration.setShowSoftInputOnFocus(false);
         dateClickListener(mExpiration);
 
         if(mNewProduct.equals("false")){
@@ -157,8 +154,9 @@ public class DetailedProductActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click back again to save the product", Toast.LENGTH_SHORT).show();
-
+        if(!this.doubleBackToExitPressedOnce) {
+            Toast.makeText(this, "Please click back again to save the product", Toast.LENGTH_SHORT).show();
+        }
         new Handler().postDelayed(new Runnable() {
 
             @Override

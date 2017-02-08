@@ -49,7 +49,7 @@ public class Product {
         Date toCompare;
         try {
             toCompare = formatter.parse(this.getExpirationDate());
-            expiredProduct= today.before(toCompare);
+            expiredProduct= toCompare.before(today);
             Log.d("EXPIRED", getTitle()+" expired? "+expiredProduct);
         }
         catch (ParseException e) {

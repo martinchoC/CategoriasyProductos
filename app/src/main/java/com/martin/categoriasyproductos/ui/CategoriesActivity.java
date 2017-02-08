@@ -32,20 +32,7 @@ public class CategoriesActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         myDbHelper = new DatabaseOpenHelper(this);
-        try {
-            // check if database exists in app path, if not copy it from assets
-            myDbHelper.create();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            // open the database
-            myDbHelper.open();
-            myDbHelper.getWritableDatabase();
-        } catch (SQLException sqle) {
-            throw sqle;
-        }
+        manageDatabase();
 
         ArrayList <Category> categoryArrayList = myDbHelper.readCategories();
         for(Category category: categoryArrayList){
@@ -64,6 +51,23 @@ public class CategoriesActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(adapter);
 
         mRecyclerView.setHasFixedSize(true); //THIS HELPS WITH PERFORMANCE
+    }
+
+    private void manageDatabase() {
+        try {
+            // check if database exists in app path, if not copy it from assets
+            myDbHelper.create();
+        } catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            // open the database
+            myDbHelper.open();
+            myDbHelper.getWritableDatabase();
+        } catch (SQLException sqle) {
+            throw sqle;
+        }
     }
 
 }
