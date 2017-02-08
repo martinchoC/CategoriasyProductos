@@ -1,6 +1,8 @@
 package com.martin.categoriasyproductos.model;
 
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,7 +49,8 @@ public class Product {
         Date toCompare;
         try {
             toCompare = formatter.parse(this.getExpirationDate());
-            expiredProduct= toCompare.before(today);
+            expiredProduct= today.before(toCompare);
+            Log.d("EXPIRED", getTitle()+" expired? "+expiredProduct);
         }
         catch (ParseException e) {
             e.printStackTrace();
