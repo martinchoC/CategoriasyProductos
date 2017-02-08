@@ -1,6 +1,8 @@
 package com.martin.categoriasyproductos.model;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -9,12 +11,13 @@ import java.util.Date;
  */
 public class Product {
 
-    public String mID;
-    public String mTitle;
-    public String mPrice;
-    public String mStock;
-    public String mCreationDate;
-    public String mExpirationDate;
+    private String mID;
+    private String mTitle;
+    private String mPrice;
+    private String  mStock;
+    private String mCreationDate;
+    private String mExpirationDate;
+    private Category mCategory;
 
     //constructor
     public Product(String id, String title, String stock, String creationDate, String expirationDate){
@@ -25,17 +28,35 @@ public class Product {
         this.mExpirationDate = expirationDate;
     }
 
+    public void setCategory(Category category){
+        mCategory = category;
+    }
+
+    public Category getCategory(){
+        return mCategory;
+    }
+
     public String getID(){
         return mID;
     }
 
-    public boolean isExpired(){
-        String actualDate = Calendar.getInstance().getTime().toString();
-        return (actualDate.equals(mExpirationDate));
+    public Boolean isExpired(){
+        Boolean expiredProduct= false;
+        SimpleDateFormat formatter  = new SimpleDateFormat("dd/MM/yyyy");
+        Date today = new Date(); //Actual date
+        Date toCompare;
+        try {
+            toCompare = formatter.parse(this.getExpirationDate());
+            expiredProduct= toCompare.before(today);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return expiredProduct;
     }
 
-    public boolean hasStock(){
-        return (mStock != "0");
+    public Boolean hasStock(){
+        return (Integer.valueOf(mStock)>0);
     }
 
     public String getTitle() {

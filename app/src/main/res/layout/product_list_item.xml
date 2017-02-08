@@ -2,28 +2,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/item_layout">
 
-    <TextView
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/categoryNameTextView"
-        android:textColor="@android:color/black"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/productLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/categoryNameTextView"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="2dp"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            tools:text="Producto"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sumProductsLabel"
+            android:layout_below="@+id/categoryNameTextView"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:layout_marginBottom="2dp"
+            android:textColor="@android:color/darker_gray"
+            tools:text="Precio"/>
+
+    </LinearLayout>
+
+    <View
         android:layout_marginTop="5dp"
-        android:textSize="20sp"
-        android:paddingLeft="10dp"
-        tools:text="Producto"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sumProductsLabel"
-        android:layout_below="@+id/categoryNameTextView"
-        android:gravity="left"
-        android:paddingLeft="10dp"
         android:layout_marginBottom="5dp"
-        android:textColor="@android:color/darker_gray"
-        tools:text="Precio"/>
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/productLayout"
+        android:background="@android:color/darker_gray"/>
 
 </RelativeLayout>

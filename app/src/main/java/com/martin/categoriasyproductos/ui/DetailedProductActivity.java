@@ -1,8 +1,6 @@
 package com.martin.categoriasyproductos.ui;
 
 import com.martin.categoriasyproductos.R;
-import com.martin.categoriasyproductos.model.Category;
-import com.martin.categoriasyproductos.model.PayTextWatcher;
 import com.martin.categoriasyproductos.model.Product;
 import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
 
@@ -12,17 +10,13 @@ import android.database.SQLException;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +29,6 @@ public class DetailedProductActivity extends AppCompatActivity {
     @BindView(R.id.editTextCreation) EditText mCreation;
     @BindView(R.id.editTextExpiration) EditText mExpiration;
 
-    private Category mCategory;
     private String mProductID;
     private String mCategoryId;
     boolean doubleBackToExitPressedOnce;
@@ -52,12 +45,8 @@ public class DetailedProductActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mCategoryId = intent.getStringExtra("CATEGORYID");
-        Log.d("CATEGORYID", mCategoryId);
         mProductID = intent.getStringExtra("PRODID");
-        Log.d("PRODID", mProductID);
         mNewProduct = intent.getStringExtra("NEW");
-        Log.d("NEWPRODUCT", mNewProduct);
-
 
         myDbHelper = new DatabaseOpenHelper(this);
         try {
@@ -75,39 +64,34 @@ public class DetailedProductActivity extends AppCompatActivity {
             throw sqle;
         }
 
-        final PayTextWatcher ptw = new PayTextWatcher(mPrice, "%,.2f");
-        mPrice.addTextChangedListener(ptw);
-
         mCreation.setShowSoftInputOnFocus(false);
-        mCreation.setOnClickListener(new View.OnClickListener() {
+        dateClickListener(mCreation);
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                //To show current date in the datepicker
-                Calendar mcurrentDate=Calendar.getInstance();
-                int mYear=mcurrentDate.get(Calendar.YEAR);
-                int mMonth=mcurrentDate.get(Calendar.MONTH);
-                int mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog mDatePicker=new DatePickerDialog(DetailedProductActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        // TODO Auto-generated method stub
-                        mCreation.setText(new StringBuilder().append(selectedday).append("/").append(selectedmonth + 1).append("/")
-                                .append(selectedyear).append(""));
-                    }
-                },mYear, mMonth, mDay);
-                mDatePicker.setTitle("Select date");
-                mDatePicker.show();  }
-        });
 
         mExpiration.setShowSoftInputOnFocus(false);
-        mExpiration.setOnClickListener(new View.OnClickListener() {
+        dateClickListener(mExpiration);
 
+        if(mNewProduct.equals("false")){
+            Product product = myDbHelper.getProduct(mProductID);
+            populateFields(product);
+        }
+    }
+
+    private void populateFields(Product product) {
+        mName.setText(product.getTitle());
+        mStock.setText(product.getStock().toString());
+        mCreation.setText(product.getCreationDate());
+        mExpiration.setText(product.getExpirationDate());
+        if(product.getPrice() != null) {
+            mPrice.setText(product.getPrice().toString());
+        }
+    }
+
+    private void dateClickListener(final EditText editText) {
+        editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                //To show current date in the datepicker
                 Calendar mcurrentDate=Calendar.getInstance();
                 int mYear=mcurrentDate.get(Calendar.YEAR);
                 int mMonth=mcurrentDate.get(Calendar.MONTH);
@@ -116,7 +100,7 @@ public class DetailedProductActivity extends AppCompatActivity {
                 DatePickerDialog mDatePicker=new DatePickerDialog(DetailedProductActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
-                        mExpiration.setText(new StringBuilder().append(selectedday).append("/").append(selectedmonth + 1).append("/")
+                        editText.setText(new StringBuilder().append(selectedday).append("/").append(selectedmonth + 1).append("/")
                                 .append(selectedyear).append(""));
                     }
                 },mYear, mMonth, mDay);
@@ -130,20 +114,28 @@ public class DetailedProductActivity extends AppCompatActivity {
 
         if (doubleBackToExitPressedOnce) {
             if(mName.getText().length()==0 || mStock.getText().length()==0 || mCreation.getText().length()==0 || mExpiration.getText().length()==0) {
-                Toast.makeText(this, "Please complete the required fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "You should complete the required fields to save the product", Toast.LENGTH_SHORT).show();
             }
             else {
-
-
-                Product product = new Product(mProductID, mName.getText().toString(), mStock.getText().toString(),
+                Product product = new Product(mProductID, mName.getText().toString(),mStock.getText().toString(),
                         mCreation.getText().toString(), mExpiration.getText().toString());
-                product.setPrice(mPrice.getText().toString());
-                if(mNewProduct.equals("true")) {
-                    myDbHelper.createProduct(product,mCategoryId);
+                {
+                    if (mPrice.getText().length() > 0) {
+                        product.setPrice(mPrice.getText().toString());
+                    }
+                    else {
+                        product.setPrice(null);
+                    }
                 }
-                /*else{
-                    myDbHelper.updateProduct(product);
-                }*/
+                {
+                    if (mNewProduct.equals("true")) {
+                        myDbHelper.createProduct(product, mCategoryId);
+                        Toast.makeText(this, "Product created successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        myDbHelper.updateProduct(product, mCategoryId);
+                        Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
             Intent intent = new Intent(this,ProductsActivity.class);
             intent.putExtra("IDCATEGORY",mCategoryId);
@@ -161,21 +153,6 @@ public class DetailedProductActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
-    }
-
-    private Date convertToDate(String dateInput) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String dateInString = dateInput;
-        Date date = new Date();
-
-        try {
-            date = formatter.parse(dateInString);
-            System.out.println(date);
-            System.out.println(formatter.format(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
 
     @Override

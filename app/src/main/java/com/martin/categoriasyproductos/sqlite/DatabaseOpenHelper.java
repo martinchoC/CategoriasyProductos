@@ -4,10 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -38,7 +35,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PRODUCT_TITLE = "TITLE";
     public static final String COLUMN_PRODUCT_PRICE = "PRICE";
     public static final String COLUMN_PRODUCT_STOCK = "STOCK";
-    public static final String COLUMN_FOREIGN_KEY_CATEGORY = "CATEGORY";
+    public static final String COLUMN_FOREIGN_KEY_CATEGORY = "CATEGORYID";
     public static final String COLUMN_PRODUCT_CREATION = "CREATION";
     public static final String COLUMN_PRODUCT_EXPIRATION = "EXPIRATION";
 
@@ -128,7 +125,6 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         myOutput.flush();
         myOutput.close();
         myInput.close();
-
     }
 
     /** open the database */
@@ -155,20 +151,22 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         initialValues.put(COLUMN_PRODUCT_PRICE, product.getPrice());
         initialValues.put(COLUMN_PRODUCT_STOCK, product.getStock());
         initialValues.put(COLUMN_FOREIGN_KEY_CATEGORY, categoryId);
-        initialValues.put(COLUMN_PRODUCT_CREATION, product.getCreationDate().toString());
-        initialValues.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate().toString());
+        initialValues.put(COLUMN_PRODUCT_CREATION, product.getCreationDate());
+        initialValues.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate());
         database.insert(PRODUCTS_TABLE, null, initialValues);
     }
 
     // updates a product
-    public boolean updateProduct(Product product) {
+    public boolean updateProduct(Product product, String categoryId) {
         ContentValues args = new ContentValues();
+        args.put(COLUMN_PRODUCT_ID, product.getID());
         args.put(COLUMN_PRODUCT_TITLE, product.getTitle());
-        args.put(COLUMN_PRODUCT_STOCK, product.getStock());
         args.put(COLUMN_PRODUCT_PRICE, product.getPrice());
-        args.put(COLUMN_PRODUCT_CREATION, product.getCreationDate().toString());
-        args.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate().toString());
-        return database.update(PRODUCTS_TABLE, args, COLUMN_PRODUCT_ID + "=" + product.getID(), null) > 0;
+        args.put(COLUMN_PRODUCT_STOCK, product.getStock());
+        args.put(COLUMN_FOREIGN_KEY_CATEGORY, categoryId);
+        args.put(COLUMN_PRODUCT_CREATION, product.getCreationDate());
+        args.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate());
+        return database.update(PRODUCTS_TABLE, args, COLUMN_PRODUCT_ID + "=?", new String[] {product.getID()}) > 0;
     }
 
     //returns the Category with the id rowId
@@ -209,12 +207,14 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         ArrayList<Product> products = new ArrayList<Product>();
         if(cursor.moveToFirst()) {
             do {
-                Product product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID)+"",
-                        getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE)+"",
-                        getStringFromColumnName(cursor,COLUMN_PRODUCT_STOCK)+"",
+                Category category = this.getCategory(idCategory);
+                Product product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID),
+                        getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE),
+                        getStringFromColumnName(cursor,COLUMN_PRODUCT_STOCK),
                         getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION),
                         getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION));
-                        product.setPrice(getStringFromColumnName(cursor,COLUMN_PRODUCT_PRICE));
+                product.setPrice(getStringFromColumnName(cursor, COLUMN_PRODUCT_PRICE));
+                product.setCategory(category);
                 products.add(product);
             }while(cursor.moveToNext());
         }
@@ -227,12 +227,13 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         Cursor cursor = getCursorProduct(productId);
         Product product = null;
         if(cursor.getCount() != 0) {
-
             product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID),
                     getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE),
                     getStringFromColumnName(cursor, COLUMN_PRODUCT_STOCK),
                     getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION),
-                    getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION));
+                    getStringFromColumnName(cursor,COLUMN_PRODUCT_EXPIRATION));
+            Category category = this.getCategory(getStringFromColumnName(cursor, COLUMN_FOREIGN_KEY_CATEGORY));
+            product.setCategory(category);
             product.setPrice(getStringFromColumnName(cursor, COLUMN_PRODUCT_PRICE));
         }while(cursor.moveToNext());
         return product;
@@ -240,11 +241,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     //retrieves a product that contains a certain id
     private Cursor getCursorProduct(String productId) throws SQLException {
-        Cursor mCursor = database.query(true, PRODUCTS_TABLE, new String[] {
-                        COLUMN_PRODUCT_ID,COLUMN_PRODUCT_TITLE,COLUMN_PRODUCT_STOCK,
-                        COLUMN_PRODUCT_PRICE,COLUMN_FOREIGN_KEY_CATEGORY,
-                        COLUMN_PRODUCT_CREATION,COLUMN_PRODUCT_EXPIRATION},
-                        COLUMN_PRODUCT_ID + " = " + productId, null, null, null, null, null);
+        String[] tableColumns = new String[] {COLUMN_PRODUCT_ID,COLUMN_PRODUCT_TITLE,COLUMN_PRODUCT_STOCK,COLUMN_PRODUCT_PRICE,COLUMN_FOREIGN_KEY_CATEGORY,COLUMN_PRODUCT_CREATION,COLUMN_PRODUCT_EXPIRATION};
+        String whereClause = COLUMN_PRODUCT_ID+" = ?";
+        String[] whereArgs = new String[] {productId};
+        Cursor mCursor = database.query(PRODUCTS_TABLE, tableColumns, whereClause, whereArgs,null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -253,7 +253,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     // delete a particular product
     public boolean deleteProduct(String rowId) {
-        return database.delete(PRODUCTS_TABLE, COLUMN_PRODUCT_ID + "=" + rowId, null) > 0;
+        String [] args = new String[]{rowId};
+        return database.delete(PRODUCTS_TABLE, COLUMN_PRODUCT_ID+"=?",args) > 0;
     }
 
     //returns an arraylist of categories
@@ -283,33 +284,26 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         return cursor.getString(columnIndex);
     }
 
-    /*
-    //returns the number of products of a category
-    public Product getNumberOfProducts(String productId){
-        Cursor cursor = getCursorProduct(productId);
-        Product product = null;
-        if(cursor.getCount() != 0) {
-            product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID),
-                    getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE),
-                    getStringFromColumnName(cursor, COLUMN_PRODUCT_STOCK),
-                    getStringFromColumnName(cursor, COLUMN_PRODUCT_CREATION),
-                    getStringFromColumnName(cursor, COLUMN_PRODUCT_EXPIRATION));
-            product.setPrice(getStringFromColumnName(cursor, COLUMN_PRODUCT_PRICE));
-        }while(cursor.moveToNext());
-        return product;
+    //returns the string contained in a column row
+    private Integer getIntFromColumnName(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return Integer.valueOf(cursor.getInt(columnIndex));
     }
-    */
+
+    //returns the float contained in a column row
+    private Float getFloatFromColumnName(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return new Float(cursor.getFloat(columnIndex));
+    }
 
     @Override
     public void onCreate(SQLiteDatabase arg0) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
-
     }
 
 }
