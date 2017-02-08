@@ -4,7 +4,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -152,8 +155,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         initialValues.put(COLUMN_PRODUCT_PRICE, product.getPrice());
         initialValues.put(COLUMN_PRODUCT_STOCK, product.getStock());
         initialValues.put(COLUMN_FOREIGN_KEY_CATEGORY, categoryId);
-        initialValues.put(COLUMN_PRODUCT_CREATION, product.getCreationDate());
-        initialValues.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate());
+        initialValues.put(COLUMN_PRODUCT_CREATION, product.getCreationDate().toString());
+        initialValues.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate().toString());
         database.insert(PRODUCTS_TABLE, null, initialValues);
     }
 
@@ -163,8 +166,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         args.put(COLUMN_PRODUCT_TITLE, product.getTitle());
         args.put(COLUMN_PRODUCT_STOCK, product.getStock());
         args.put(COLUMN_PRODUCT_PRICE, product.getPrice());
-        args.put(COLUMN_PRODUCT_CREATION, product.getCreationDate());
-        args.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate());
+        args.put(COLUMN_PRODUCT_CREATION, product.getCreationDate().toString());
+        args.put(COLUMN_PRODUCT_EXPIRATION, product.getExpirationDate().toString());
         return database.update(PRODUCTS_TABLE, args, COLUMN_PRODUCT_ID + "=" + product.getID(), null) > 0;
     }
 
@@ -209,8 +212,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                 Product product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID)+"",
                         getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE)+"",
                         getStringFromColumnName(cursor,COLUMN_PRODUCT_STOCK)+"",
-                        getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION)+"",
-                        getStringFromColumnName(cursor,COLUMN_PRODUCT_EXPIRATION));
+                        getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION),
+                        getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION));
                         product.setPrice(getStringFromColumnName(cursor,COLUMN_PRODUCT_PRICE));
                 products.add(product);
             }while(cursor.moveToNext());
@@ -224,11 +227,12 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         Cursor cursor = getCursorProduct(productId);
         Product product = null;
         if(cursor.getCount() != 0) {
+
             product = new Product(getStringFromColumnName(cursor, COLUMN_PRODUCT_ID),
                     getStringFromColumnName(cursor, COLUMN_PRODUCT_TITLE),
                     getStringFromColumnName(cursor, COLUMN_PRODUCT_STOCK),
-                    getStringFromColumnName(cursor, COLUMN_PRODUCT_CREATION),
-                    getStringFromColumnName(cursor, COLUMN_PRODUCT_EXPIRATION));
+                    getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION),
+                    getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION));
             product.setPrice(getStringFromColumnName(cursor, COLUMN_PRODUCT_PRICE));
         }while(cursor.moveToNext());
         return product;

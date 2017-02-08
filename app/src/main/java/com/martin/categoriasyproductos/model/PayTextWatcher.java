@@ -128,7 +128,6 @@ public class PayTextWatcher implements TextWatcher {
         str = str.replaceAll("[^\\d]", "");
         if (str != null && str.length() > 0)
         {
-
             double value = Double.parseDouble(str);
             String s_value = Double.toString(Math.abs(value / 100));
             int integerPlaces = s_value.indexOf('.');

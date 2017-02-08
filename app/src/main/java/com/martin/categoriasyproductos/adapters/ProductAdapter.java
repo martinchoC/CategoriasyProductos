@@ -1,6 +1,7 @@
 package com.martin.categoriasyproductos.adapters;
 
 import android.content.Context;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,13 +68,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             super(itemLayoutView);
             categoryLabel = (TextView) itemLayoutView.findViewById(R.id.categoryNameTextView);
             priceProductLabel = (TextView) itemLayoutView.findViewById(R.id.sumProductsLabel);
-            /*itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context,"clicked="+ id,Toast.LENGTH_SHORT).show();
-                }
-            });
-            */
         }
 
     }

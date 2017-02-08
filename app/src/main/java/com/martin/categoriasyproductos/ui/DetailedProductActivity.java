@@ -19,7 +19,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +78,7 @@ public class DetailedProductActivity extends AppCompatActivity {
         final PayTextWatcher ptw = new PayTextWatcher(mPrice, "%,.2f");
         mPrice.addTextChangedListener(ptw);
 
+        mCreation.setShowSoftInputOnFocus(false);
         mCreation.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -89,13 +93,15 @@ public class DetailedProductActivity extends AppCompatActivity {
                 DatePickerDialog mDatePicker=new DatePickerDialog(DetailedProductActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
-                    mCreation.setText(selectedyear+"/"+selectedmonth+"/"+selectedday);
+                        mCreation.setText(new StringBuilder().append(selectedday).append("/").append(selectedmonth + 1).append("/")
+                                .append(selectedyear).append(""));
                     }
                 },mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select date");
                 mDatePicker.show();  }
         });
 
+        mExpiration.setShowSoftInputOnFocus(false);
         mExpiration.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -110,7 +116,8 @@ public class DetailedProductActivity extends AppCompatActivity {
                 DatePickerDialog mDatePicker=new DatePickerDialog(DetailedProductActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
-                        mExpiration.setText(selectedyear+"/"+selectedmonth+"/"+selectedday);
+                        mExpiration.setText(new StringBuilder().append(selectedday).append("/").append(selectedmonth + 1).append("/")
+                                .append(selectedyear).append(""));
                     }
                 },mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select date");
@@ -126,6 +133,8 @@ public class DetailedProductActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please complete the required fields", Toast.LENGTH_SHORT).show();
             }
             else {
+
+
                 Product product = new Product(mProductID, mName.getText().toString(), mStock.getText().toString(),
                         mCreation.getText().toString(), mExpiration.getText().toString());
                 product.setPrice(mPrice.getText().toString());
@@ -138,7 +147,7 @@ public class DetailedProductActivity extends AppCompatActivity {
             }
             Intent intent = new Intent(this,ProductsActivity.class);
             intent.putExtra("IDCATEGORY",mCategoryId);
-            finish();
+            this.finish();
             startActivity(intent);
         }
 
@@ -152,6 +161,21 @@ public class DetailedProductActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+
+    private Date convertToDate(String dateInput) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateInString = dateInput;
+        Date date = new Date();
+
+        try {
+            date = formatter.parse(dateInString);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     @Override

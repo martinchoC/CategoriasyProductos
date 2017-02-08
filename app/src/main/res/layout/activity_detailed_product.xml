@@ -97,7 +97,8 @@
         android:layout_below="@+id/editTextStock"
         android:layout_alignParentEnd="true"
         android:id="@+id/editTextCreation"
-        android:layout_toEndOf="@+id/textCreation"/>
+        android:layout_toEndOf="@+id/textCreation"
+        />
 
     <TextView
         android:layout_height="wrap_content"

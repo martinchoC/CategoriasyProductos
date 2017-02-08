@@ -2,6 +2,7 @@ package com.martin.categoriasyproductos.model;
 
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by MartinC on 3/2/2017.
