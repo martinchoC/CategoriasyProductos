@@ -27,12 +27,6 @@ public class Category {
         return mID;
     }
 
-    public void addProduct (Product product){
-        mProducts.add(product);
-    }
-
-    public void removeProduct (Product product){ }
-
     public ArrayList<Product> getProducts(){
         return mProducts;
     }

@@ -32,10 +32,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return mCategories.length;
     }
 
-    public Object getItem(int position) {
-        return mCategories[position];
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -70,8 +66,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ProductsActivity.class);
                     intent.putExtra("IDCATEGORY",id);
-                    ((Activity)context).finish();
                     context.startActivity(intent);
+                    ((Activity)context).finish();
+
                 }
             });
         }

@@ -41,6 +41,7 @@ public class DetailedProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detailed_product);
         doubleBackToExitPressedOnce = false;
         ButterKnife.bind(this);
@@ -149,7 +150,7 @@ public class DetailedProductActivity extends AppCompatActivity {
             }
             Intent intent = new Intent(this,ProductsActivity.class);
             intent.putExtra("IDCATEGORY",mCategoryId);
-            this.finish();
+            this.finishAfterTransition();
             startActivity(intent);
         }
 

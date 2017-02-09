@@ -6,22 +6,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.martin.categoriasyproductos.R;
 import com.martin.categoriasyproductos.model.Product;
 import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
 import com.martin.categoriasyproductos.ui.DetailedProductActivity;
 import com.martin.categoriasyproductos.ui.ProductsActivity;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by MartinC on 6/2/2017.
@@ -42,10 +36,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public int getItemCount() {
         return mProducts.length;
-    }
-
-    public Object getItem(int position) {
-        return mProducts[position];
     }
 
     @Override
@@ -135,4 +125,5 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             ((Activity) context).recreate();
         }
     }
+
 }
