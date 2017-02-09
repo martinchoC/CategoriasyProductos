@@ -143,7 +143,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     // insert a product into the product table
-    public void createProduct(Product product, String categoryId) {
+    public void createProduct(Product product, int categoryId) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_ID, product.getID());
         initialValues.put(COLUMN_PRODUCT_TITLE, product.getTitle());
@@ -156,7 +156,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     // updates a product
-    public boolean updateProduct(Product product, String categoryId) {
+    public boolean updateProduct(Product product, int categoryId) {
         ContentValues args = new ContentValues();
         args.put(COLUMN_PRODUCT_ID, product.getID());
         args.put(COLUMN_PRODUCT_TITLE, product.getTitle());
@@ -169,19 +169,18 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     //returns the Category with the id rowId
-    public Category getCategory(String rowId){
+    public Category getCategory(int rowId){
         Cursor cursor = getCursorCategory(rowId);
-
+        Category category = null;
         if(cursor.getCount() != 0) {
-            Category category = new Category(getStringFromColumnName(cursor, COLUMN_ID)+"",
+            category = new Category(new Integer(getIntFromColumnName(cursor, COLUMN_ID)),
                     getStringFromColumnName(cursor, COLUMN_TITLE));
-            return category;
         }while(cursor.moveToNext());
-        return null;
+        return category;
     }
 
     // retrieves a particular category from the DB
-    public Cursor getCursorCategory(String rowId) throws SQLException {
+    public Cursor getCursorCategory(Integer rowId) throws SQLException {
         Cursor mCursor = database.query(true, TABLE_CATEGORIES, new String[] {
                         COLUMN_ID, COLUMN_TITLE},
                 COLUMN_ID + " = " + rowId, null, null, null, null, null);
@@ -192,16 +191,16 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     //returns an arraylist of Products from a particular category
-    public ArrayList<Product> readProducts(String idCategory) {
+    public ArrayList<Product> readProducts(int idCategory) {
         ArrayList<Product> products = readProds(idCategory);
         return products;
     }
 
     //retrieves an arraylist of products
-    public ArrayList<Product> readProds(String idCategory) {
+    public ArrayList<Product> readProds(int idCategory) {
         String[] tableColumns = new String[] {COLUMN_PRODUCT_ID,COLUMN_PRODUCT_TITLE,COLUMN_PRODUCT_STOCK,COLUMN_PRODUCT_PRICE,COLUMN_PRODUCT_CREATION,COLUMN_PRODUCT_EXPIRATION};
         String whereClause = COLUMN_FOREIGN_KEY_CATEGORY+" = ?";
-        String[] whereArgs = new String[] {idCategory};
+        String[] whereArgs = new String[] {idCategory+""};
         Cursor cursor = database.query(PRODUCTS_TABLE, tableColumns, whereClause, whereArgs,null, null, null);
         ArrayList<Product> products = new ArrayList<Product>();
         if(cursor.moveToFirst()) {
@@ -231,7 +230,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
                     getStringFromColumnName(cursor, COLUMN_PRODUCT_STOCK),
                     getStringFromColumnName(cursor,COLUMN_PRODUCT_CREATION),
                     getStringFromColumnName(cursor,COLUMN_PRODUCT_EXPIRATION));
-            Category category = this.getCategory(getStringFromColumnName(cursor, COLUMN_FOREIGN_KEY_CATEGORY));
+            Category category = this.getCategory(getIntFromColumnName(cursor, COLUMN_FOREIGN_KEY_CATEGORY));
             product.setCategory(category);
             product.setPrice(getStringFromColumnName(cursor, COLUMN_PRODUCT_PRICE));
         }while(cursor.moveToNext());
@@ -252,7 +251,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     // delete a particular product
     public boolean deleteProduct(String rowId) {
-        String [] args = new String[]{rowId};
+        String [] args = new String[]{rowId+""};
         return database.delete(PRODUCTS_TABLE, COLUMN_PRODUCT_ID+"=?",args) > 0;
     }
 
@@ -262,7 +261,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         ArrayList<Category> categories = new ArrayList<Category>();
         if(cursor.moveToFirst()) {
             do {
-                Category category = new Category(getStringFromColumnName(cursor, COLUMN_ID)+"",
+                Category category = new Category(Integer.valueOf(getIntFromColumnName(cursor, COLUMN_ID)),
                         getStringFromColumnName(cursor, COLUMN_TITLE));
                 categories.add(category);
             }while(cursor.moveToNext());
@@ -271,7 +270,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     // retrieves all categories
-    public Cursor getAllCategories() {
+    private Cursor getAllCategories() {
         return database.query(TABLE_CATEGORIES, new String[] { COLUMN_ID,
                         COLUMN_TITLE}, null, null,
                 null, null, null);
@@ -281,6 +280,12 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private String getStringFromColumnName(Cursor cursor, String columnName) {
         int columnIndex = cursor.getColumnIndex(columnName);
         return cursor.getString(columnIndex);
+    }
+
+    //returns the integer contained in a column row
+    private int getIntFromColumnName(Cursor cursor, String columnName) {
+        int columnIndex = cursor.getColumnIndex(columnName);
+        return cursor.getInt(columnIndex);
     }
 
     @Override

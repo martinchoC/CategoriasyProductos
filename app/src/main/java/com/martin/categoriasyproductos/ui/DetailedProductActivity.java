@@ -33,7 +33,7 @@ public class DetailedProductActivity extends AppCompatActivity {
     @BindView(R.id.editTextExpiration) EditText mExpiration;
 
     private String mProductID;
-    private String mCategoryId;
+    private int mCategoryId;
     boolean doubleBackToExitPressedOnce;
     String mNewProduct;
     private DatabaseOpenHelper myDbHelper;
@@ -48,7 +48,7 @@ public class DetailedProductActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        mCategoryId = intent.getStringExtra("CATEGORYID");
+        mCategoryId = intent.getIntExtra("CATEGORYID",0);
         mProductID = intent.getStringExtra("PRODID");
         mNewProduct = intent.getStringExtra("NEW");
 

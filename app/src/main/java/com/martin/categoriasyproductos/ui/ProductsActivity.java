@@ -34,7 +34,7 @@ public class ProductsActivity extends AppCompatActivity {
 
     private Product[] mProducts;
     private Category mCategory;
-    private String mCategoryId;
+    private int mCategoryId;
     private ArrayList<Product> productArrayList;
     private ProductAdapter adapter;
     private int selectionChosen;
@@ -52,7 +52,7 @@ public class ProductsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        mCategoryId = intent.getStringExtra("IDCATEGORY");
+        mCategoryId = intent.getIntExtra("IDCATEGORY",0);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);

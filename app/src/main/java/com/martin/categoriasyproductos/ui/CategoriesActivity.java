@@ -71,4 +71,10 @@ public class CategoriesActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        myDbHelper.close();
+        this.finish();
+    }
 }

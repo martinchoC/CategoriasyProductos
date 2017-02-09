@@ -57,7 +57,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView categoryLabel;
         TextView priceProductLabel;
-        String id;
+        Integer id;
 
         public ViewHolder(View itemLayoutView, final Context context) {
             super(itemLayoutView);

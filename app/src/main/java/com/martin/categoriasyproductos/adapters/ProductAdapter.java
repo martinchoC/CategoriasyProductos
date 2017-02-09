@@ -70,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mcategoryLabel;
         TextView mpriceProductLabel;
-        String idCategory;
+        Integer idCategory;
         String idProduct;
         DatabaseOpenHelper dbOpenHelper;
 
@@ -87,7 +87,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             });
         }
 
-        private static void showOptions(final Context context, final String idCategory, final String idProduct, final DatabaseOpenHelper databaseOpenHelper) {
+        private static void showOptions(final Context context, final Integer idCategory, final String idProduct, final DatabaseOpenHelper databaseOpenHelper) {
             final AlertDialog.Builder UnitSelection = new AlertDialog.Builder(context);
             String options[] ={"Edit","Remove",};
             UnitSelection.setItems(options, new DialogInterface.OnClickListener() {
@@ -110,7 +110,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         }
 
-        private static void editProduct(final Context context, final String idCategory, final String idProduct){
+        private static void editProduct(final Context context, final Integer idCategory, final String idProduct){
             Intent intent = new Intent(context, DetailedProductActivity.class);
             intent.putExtra("CATEGORYID",idCategory);
             intent.putExtra("PRODID",idProduct);
@@ -119,7 +119,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             context.startActivity(intent);
         }
 
-        private static void removeProduct(Context context, final String idProduct, final String idCategory, DatabaseOpenHelper databaseOpenHelper){
+        private static void removeProduct(Context context, final String idProduct, final Integer idCategory, DatabaseOpenHelper databaseOpenHelper){
             databaseOpenHelper.deleteProduct(idProduct);
             Intent intent = new Intent(context, ProductsActivity.class);
             intent.putExtra("IDCATEGORY",idCategory);

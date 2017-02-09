@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public class Category {
 
-    public String mID;
+    public Integer mID;
     public String mTitle;
     public ArrayList<Product> mProducts;
 
     //constructor
-    public Category(String id, String title){
+    public Category(Integer id, String title){
         this.mID = id;
         this.mTitle = title;
         mProducts = new ArrayList<>();
@@ -23,7 +23,7 @@ public class Category {
         return mTitle;
     }
 
-    public String getID() {
+    public Integer getID() {
         return mID;
     }
 
