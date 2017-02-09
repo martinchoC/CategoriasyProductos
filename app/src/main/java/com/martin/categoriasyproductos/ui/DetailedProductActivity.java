@@ -53,20 +53,7 @@ public class DetailedProductActivity extends AppCompatActivity {
         mNewProduct = intent.getStringExtra("NEW");
 
         myDbHelper = new DatabaseOpenHelper(this);
-        try {
-            // check if database exists in app path, if not copy it from assets
-            myDbHelper.create();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            // open the database
-            myDbHelper.open();
-            myDbHelper.getWritableDatabase();
-        } catch (SQLException sqle) {
-            throw sqle;
-        }
+        manageDatabase();
 
         hideKeyboard(mCreation);
         dateClickListener(mCreation);
@@ -80,6 +67,24 @@ public class DetailedProductActivity extends AppCompatActivity {
         }
     }
 
+    private void manageDatabase() {
+        try {
+            // check if database exists in app path, if not copy it from assets
+            myDbHelper.create();
+        }
+        catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+        try {
+            // open the database
+            myDbHelper.open();
+            myDbHelper.getWritableDatabase();
+        }
+        catch (SQLException sqle) {
+            throw sqle;
+        }
+    }
+
     private void hideKeyboard(EditText editText){
         editText.setInputType(InputType.TYPE_NULL);
         editText.setShowSoftInputOnFocus(false);
@@ -90,11 +95,11 @@ public class DetailedProductActivity extends AppCompatActivity {
 
     private void populateFields(Product product) {
         mName.setText(product.getTitle());
-        mStock.setText(product.getStock().toString());
+        mStock.setText(product.getStock());
         mCreation.setText(product.getCreationDate());
         mExpiration.setText(product.getExpirationDate());
         if(product.getPrice() != null) {
-            mPrice.setText(product.getPrice().toString());
+            mPrice.setText(product.getPrice());
         }
     }
 

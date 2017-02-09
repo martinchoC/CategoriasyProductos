@@ -180,7 +180,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     // retrieves a particular category from the DB
-    public Cursor getCursorCategory(Integer rowId) throws SQLException {
+    private Cursor getCursorCategory(Integer rowId) throws SQLException {
         Cursor mCursor = database.query(true, TABLE_CATEGORIES, new String[] {
                         COLUMN_ID, COLUMN_TITLE},
                 COLUMN_ID + " = " + rowId, null, null, null, null, null);
@@ -197,7 +197,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     }
 
     //retrieves an arraylist of products
-    public ArrayList<Product> readProds(int idCategory) {
+    private ArrayList<Product> readProds(int idCategory) {
         String[] tableColumns = new String[] {COLUMN_PRODUCT_ID,COLUMN_PRODUCT_TITLE,COLUMN_PRODUCT_STOCK,COLUMN_PRODUCT_PRICE,COLUMN_PRODUCT_CREATION,COLUMN_PRODUCT_EXPIRATION};
         String whereClause = COLUMN_FOREIGN_KEY_CATEGORY+" = ?";
         String[] whereArgs = new String[] {idCategory+""};

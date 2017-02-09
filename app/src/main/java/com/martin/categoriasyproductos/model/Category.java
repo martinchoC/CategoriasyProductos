@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class Category {
 
-    public Integer mID;
-    public String mTitle;
-    public ArrayList<Product> mProducts;
+    private Integer mID;
+    private String mTitle;
+    private ArrayList<Product> mProducts;
 
     //constructor
     public Category(Integer id, String title){
