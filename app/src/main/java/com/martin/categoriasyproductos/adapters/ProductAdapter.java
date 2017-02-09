@@ -43,7 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         // create a new view
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_item, null);
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView,mContext,mProducts);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView,mContext);
         return viewHolder;
     }
 
@@ -73,20 +73,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         String idProduct;
         DatabaseOpenHelper dbOpenHelper;
 
-        public ViewHolder(View itemLayoutView, final Context context, final Product[] products) {
+        public ViewHolder(View itemLayoutView, final Context context) {
             super(itemLayoutView);
             mcategoryLabel = (TextView) itemLayoutView.findViewById(R.id.categoryNameTextView);
             mpriceProductLabel = (TextView) itemLayoutView.findViewById(R.id.sumProductsLabel);
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    showOptions(context,idCategory,idProduct,dbOpenHelper,products);
+                    showOptions(context,idCategory,idProduct,dbOpenHelper);
                     return true;
                 }
             });
         }
 
-        private static void showOptions(final Context context, final String idCategory, final String idProduct, final DatabaseOpenHelper databaseOpenHelper, final Product[] products) {
+        private static void showOptions(final Context context, final String idCategory, final String idProduct, final DatabaseOpenHelper databaseOpenHelper) {
             final AlertDialog.Builder UnitSelection = new AlertDialog.Builder(context);
             String options[] ={"Edit","Remove",};
             UnitSelection.setItems(options, new DialogInterface.OnClickListener() {

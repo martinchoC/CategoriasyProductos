@@ -122,7 +122,6 @@ public class DetailedProductActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         if (doubleBackToExitPressedOnce) {
             if(mName.getText().length()==0 || mStock.getText().length()==0 || mCreation.getText().length()==0 || mExpiration.getText().length()==0) {
                 Toast.makeText(this, "You should complete the required fields to save the product", Toast.LENGTH_SHORT).show();
@@ -150,21 +149,21 @@ public class DetailedProductActivity extends AppCompatActivity {
             }
             Intent intent = new Intent(this,ProductsActivity.class);
             intent.putExtra("IDCATEGORY",mCategoryId);
-            this.finishAfterTransition();
+            this.finish();
             startActivity(intent);
         }
-
-        this.doubleBackToExitPressedOnce = true;
-        if(!this.doubleBackToExitPressedOnce) {
+        else{
+            this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, "Please click back again to save the product", Toast.LENGTH_SHORT).show();
-        }
-        new Handler().postDelayed(new Runnable() {
+            new Handler().postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-            }
-        }, 2000);
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
+        }
+
     }
 
     @Override
