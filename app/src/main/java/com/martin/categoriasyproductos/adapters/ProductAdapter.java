@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.martin.categoriasyproductos.R;
@@ -41,7 +43,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_item, null);
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_list_item, parent, false);
         // create ViewHolder
         ViewHolder viewHolder = new ViewHolder(itemLayoutView,mContext);
         return viewHolder;
@@ -62,7 +64,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         viewHolder.idProduct = mProducts[position].getID();
         viewHolder.idCategory = mProducts[position].getCategory().getID();
         viewHolder.dbOpenHelper = mDatabaseOpenHelper;
-
     }
 
     // inner class to hold a reference to each item of RecyclerView
