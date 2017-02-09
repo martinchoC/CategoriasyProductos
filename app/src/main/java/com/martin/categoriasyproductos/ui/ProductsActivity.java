@@ -45,7 +45,6 @@ public class ProductsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_products);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,20 +60,7 @@ public class ProductsActivity extends AppCompatActivity {
         myDbHelper = new DatabaseOpenHelper(this);
 
         selectionChosen = 0;
-        try {
-            // check if database exists in app path, if not copy it from assets
-            myDbHelper.create();
-        } catch (IOException ioe) {
-            throw new Error("Unable to create database");
-        }
-
-        try {
-            // open the database
-            myDbHelper.open();
-            myDbHelper.getWritableDatabase();
-        } catch (SQLException sqle) {
-            throw sqle;
-        }
+        manageDatabase();
 
         mCategory = myDbHelper.getCategory(mCategoryId);
         productArrayList = myDbHelper.readProducts(mCategoryId);
@@ -88,6 +74,25 @@ public class ProductsActivity extends AppCompatActivity {
 
         mRecyclerView.setHasFixedSize(true); //THIS HELPS WITH PERFORMANCE
 
+    }
+
+    private void manageDatabase() {
+        try {
+            // check if database exists in app path, if not copy it from assets
+            myDbHelper.create();
+        }
+        catch (IOException ioe) {
+            throw new Error("Unable to create database");
+        }
+
+        try {
+            // open the database
+            myDbHelper.open();
+            myDbHelper.getWritableDatabase();
+        }
+        catch (SQLException sqle) {
+            throw sqle;
+        }
     }
 
     @Override
@@ -167,7 +172,6 @@ public class ProductsActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
         mProducts = new Product[productsBetween.size()];
         mProducts = productsBetween.toArray(mProducts);

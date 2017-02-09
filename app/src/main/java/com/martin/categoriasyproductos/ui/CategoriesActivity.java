@@ -57,15 +57,16 @@ public class CategoriesActivity extends AppCompatActivity {
         try {
             // check if database exists in app path, if not copy it from assets
             myDbHelper.create();
-        } catch (IOException ioe) {
+        }
+        catch (IOException ioe) {
             throw new Error("Unable to create database");
         }
-
         try {
             // open the database
             myDbHelper.open();
             myDbHelper.getWritableDatabase();
-        } catch (SQLException sqle) {
+        }
+        catch (SQLException sqle) {
             throw sqle;
         }
     }

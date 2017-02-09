@@ -169,7 +169,6 @@ public class DetailedProductActivity extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
-        //When BACK BUTTON is pressed, the activity on the stack is restarted
     }
 
 }
