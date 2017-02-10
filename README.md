@@ -14,7 +14,7 @@ How to create a new product:
 Then press the return button twice to save the product.
 
 How to filter the products:
-    Press the filter button near the (+) button on top of the products screen and a popup will appear. There choose an option to filter the products
+    Press the filter button near the (+) button on top of the products screen and a popup will appear. There, select an option to filter the products
 belonging to a category.
 IMPORTANT: The creation and expiration of a product is set at 00:00:00 am
 
