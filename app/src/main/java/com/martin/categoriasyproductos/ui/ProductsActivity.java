@@ -18,7 +18,7 @@ import com.martin.categoriasyproductos.R;
 import com.martin.categoriasyproductos.adapters.ProductAdapter;
 import com.martin.categoriasyproductos.model.Category;
 import com.martin.categoriasyproductos.model.Product;
-import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
+import com.martin.categoriasyproductos.sqlite.DatabaseProdsAndCats;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -38,7 +38,7 @@ public class ProductsActivity extends AppCompatActivity {
     private ArrayList<Product> productArrayList;
     private ProductAdapter adapter;
     private int selectionChosen;
-    private DatabaseOpenHelper myDbHelper;
+    private DatabaseProdsAndCats mDatabaseProdsAndCats;
 
     @BindView(R.id.recycler_view_products) RecyclerView mRecyclerView;
 
@@ -57,18 +57,18 @@ public class ProductsActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        myDbHelper = new DatabaseOpenHelper(this);
+        mDatabaseProdsAndCats = new DatabaseProdsAndCats(this);
 
         selectionChosen = 0;
         manageDatabase();
 
-        mCategory = myDbHelper.getCategory(mCategoryId);
-        productArrayList = myDbHelper.readProducts(mCategoryId);
+        mCategory = mDatabaseProdsAndCats.getCategory(mCategoryId);
+        productArrayList = mDatabaseProdsAndCats.readProducts(mCategoryId);
         mProducts = new Product[productArrayList.size()];
         mProducts = productArrayList.toArray(mProducts);
 
         //Create the adapter
-        adapter = new ProductAdapter(this, mProducts, myDbHelper);
+        adapter = new ProductAdapter(this, mProducts, mDatabaseProdsAndCats);
         //set the adapter
         mRecyclerView.setAdapter(adapter);
 
@@ -79,7 +79,7 @@ public class ProductsActivity extends AppCompatActivity {
     private void manageDatabase() {
         try {
             // check if database exists in app path, if not copy it from assets
-            myDbHelper.create();
+            mDatabaseProdsAndCats.create();
         }
         catch (IOException ioe) {
             throw new Error("Unable to create database");
@@ -87,8 +87,8 @@ public class ProductsActivity extends AppCompatActivity {
 
         try {
             // open the database
-            myDbHelper.open();
-            myDbHelper.getWritableDatabase();
+            mDatabaseProdsAndCats.open();
+            mDatabaseProdsAndCats.getWritableDatabase();
         }
         catch (SQLException sqle) {
             throw sqle;
@@ -125,10 +125,10 @@ public class ProductsActivity extends AppCompatActivity {
     }
 
     private void showOptionsFilter(){
-        final AlertDialog.Builder UnitSelection = new AlertDialog.Builder(this);
-        UnitSelection.setTitle("Select filter");
+        final AlertDialog.Builder unitSelection = new AlertDialog.Builder(this);
+        unitSelection.setTitle("Select filter");
         final String [] options = new String[] {"Expired products","Products with stock","Products created in the last 90 days"};
-        UnitSelection.setSingleChoiceItems(options, selectionChosen, new DialogInterface.OnClickListener() {
+        unitSelection.setSingleChoiceItems(options, selectionChosen, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Toast.makeText(getApplicationContext(), options[item], Toast.LENGTH_SHORT).show();
                 switch (item){
@@ -151,7 +151,7 @@ public class ProductsActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        AlertDialog alert = UnitSelection.create();
+        AlertDialog alert = unitSelection.create();
         alert.show();
     }
 
@@ -176,7 +176,7 @@ public class ProductsActivity extends AppCompatActivity {
         mProducts = new Product[productsBetween.size()];
         mProducts = productsBetween.toArray(mProducts);
         //Create the adapter
-        adapter = new ProductAdapter(this, mProducts,myDbHelper);
+        adapter = new ProductAdapter(this, mProducts, mDatabaseProdsAndCats);
         //set the adapter
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setHasFixedSize(true);
@@ -196,7 +196,7 @@ public class ProductsActivity extends AppCompatActivity {
         mProducts = new Product[expired.size()];
         mProducts = expired.toArray(mProducts);
         //Create the adapter
-        adapter = new ProductAdapter(this, mProducts,myDbHelper);
+        adapter = new ProductAdapter(this, mProducts, mDatabaseProdsAndCats);
         //set the adapter
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setHasFixedSize(true);
@@ -212,7 +212,7 @@ public class ProductsActivity extends AppCompatActivity {
         mProducts = new Product[stocked.size()];
         mProducts = stocked.toArray(mProducts);
         //Create the adapter
-        adapter = new ProductAdapter(this, mProducts,myDbHelper);
+        adapter = new ProductAdapter(this, mProducts, mDatabaseProdsAndCats);
         //set the adapter
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setHasFixedSize(true);

@@ -5,4 +5,10 @@
     <string name="title_detailed_activity">Detailed product</string>
     <string name="action_filter">Filter</string>
     <string name="action_add">Add</string>
+    <string name="expiration_date">Expiration date*:</string>
+    <string name="creation_date">Creation date*:</string>
+    <string name="stock">Stock*:</string>
+    <string name="price">Price:</string>
+    <string name="title">Title*:</string>
+    <string name="advertise">*Complete the required fields in order to save the product</string>
 </resources>

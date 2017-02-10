@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title: "
+        android:text="@string/title"
         android:gravity="center_vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Price: "
+        android:text="@string/price"
         android:id="@+id/textPrice"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:layout_below="@+id/textName"
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Stock: "
+        android:text="@string/stock"
         android:id="@+id/textStock"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:layout_below="@+id/editTextPrice"
@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Creation date: "
+        android:text="@string/creation_date"
         android:id="@+id/textCreation"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:layout_below="@+id/textStock"
@@ -111,7 +111,7 @@
 
     <TextView
         android:layout_height="wrap_content"
-        android:text="Expiration date: "
+        android:text="@string/expiration_date"
         android:gravity="center_vertical"
         android:id="@+id/textExpiration"
         android:layout_width="wrap_content"
@@ -119,5 +119,15 @@
         android:layout_below="@+id/editTextCreation"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/editTextExpiration"/>
+
+    <TextView
+        android:text="@string/advertise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textExpiration"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textViewAdvertise"
+        android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

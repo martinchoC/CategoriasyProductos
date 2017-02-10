@@ -9,13 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.martin.categoriasyproductos.R;
 import com.martin.categoriasyproductos.model.Product;
-import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
+import com.martin.categoriasyproductos.sqlite.DatabaseProdsAndCats;
 import com.martin.categoriasyproductos.ui.DetailedProductActivity;
 import com.martin.categoriasyproductos.ui.ProductsActivity;
 
@@ -27,12 +25,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     private Product[] mProducts;
     protected Context mContext;
-    private DatabaseOpenHelper mDatabaseOpenHelper;
+    private DatabaseProdsAndCats mDatabaseProdsAndCats;
 
-    public ProductAdapter(Context context, Product[] products, DatabaseOpenHelper databaseOpenHelper) {
+    public ProductAdapter(Context context, Product[] products, DatabaseProdsAndCats databaseProdsAndCats) {
         mProducts = products;
         mContext = context;
-        mDatabaseOpenHelper = databaseOpenHelper;
+        mDatabaseProdsAndCats = databaseProdsAndCats;
     }
 
     @Override
@@ -63,7 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
         viewHolder.idProduct = mProducts[position].getID();
         viewHolder.idCategory = mProducts[position].getCategory().getID();
-        viewHolder.dbOpenHelper = mDatabaseOpenHelper;
+        viewHolder.dbOpenHelper = mDatabaseProdsAndCats;
     }
 
     // inner class to hold a reference to each item of RecyclerView
@@ -72,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView mpriceProductLabel;
         Integer idCategory;
         String idProduct;
-        DatabaseOpenHelper dbOpenHelper;
+        DatabaseProdsAndCats dbOpenHelper;
 
         public ViewHolder(View itemLayoutView, final Context context) {
             super(itemLayoutView);
@@ -87,7 +85,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             });
         }
 
-        private static void showOptions(final Context context, final Integer idCategory, final String idProduct, final DatabaseOpenHelper databaseOpenHelper) {
+        private static void showOptions(final Context context, final Integer idCategory, final String idProduct, final DatabaseProdsAndCats databaseProdsAndCats) {
             final AlertDialog.Builder UnitSelection = new AlertDialog.Builder(context);
             String options[] ={"Edit","Remove",};
             UnitSelection.setItems(options, new DialogInterface.OnClickListener() {
@@ -99,7 +97,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                             break;
                         //Remove product
                         case 1:
-                            removeProduct(context,idProduct,idCategory,databaseOpenHelper);
+                            removeProduct(context,idProduct,idCategory, databaseProdsAndCats);
                             break;
                     }
                     dialog.dismiss();
@@ -119,8 +117,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             context.startActivity(intent);
         }
 
-        private static void removeProduct(Context context, final String idProduct, final Integer idCategory, DatabaseOpenHelper databaseOpenHelper){
-            databaseOpenHelper.deleteProduct(idProduct);
+        private static void removeProduct(Context context, final String idProduct, final Integer idCategory, DatabaseProdsAndCats databaseProdsAndCats){
+            databaseProdsAndCats.deleteProduct(idProduct);
             Intent intent = new Intent(context, ProductsActivity.class);
             intent.putExtra("IDCATEGORY",idCategory);
             ((Activity) context).recreate();

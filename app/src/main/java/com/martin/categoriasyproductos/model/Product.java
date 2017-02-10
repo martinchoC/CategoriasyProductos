@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -44,7 +45,7 @@ public class Product {
     public Boolean isExpired(){
         Boolean expiredProduct= false;
         SimpleDateFormat formatter  = new SimpleDateFormat("dd/MM/yyyy");
-        Date today = new Date(); //Actual date
+        Date today = Calendar.getInstance().getTime(); //Actual date
         Date toCompare;
         try {
             toCompare = formatter.parse(this.getExpirationDate());

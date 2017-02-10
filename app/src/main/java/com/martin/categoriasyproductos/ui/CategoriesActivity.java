@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.martin.categoriasyproductos.R;
 import com.martin.categoriasyproductos.adapters.CategoryAdapter;
 import com.martin.categoriasyproductos.model.Category;
-import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
+import com.martin.categoriasyproductos.sqlite.DatabaseProdsAndCats;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class CategoriesActivity extends AppCompatActivity {
 
     private Category[] mCategories;
-    private DatabaseOpenHelper myDbHelper;
+    private DatabaseProdsAndCats mDatabaseProdsAndCats;
 
     @BindView(R.id.recycler_view_categories) RecyclerView mRecyclerView;
 
@@ -31,12 +31,12 @@ public class CategoriesActivity extends AppCompatActivity {
         setTitle("Categories");
         ButterKnife.bind(this);
 
-        myDbHelper = new DatabaseOpenHelper(this);
+        mDatabaseProdsAndCats = new DatabaseProdsAndCats(this);
         manageDatabase();
 
-        ArrayList <Category> categoryArrayList = myDbHelper.readCategories();
+        ArrayList <Category> categoryArrayList = mDatabaseProdsAndCats.readCategories();
         for(Category category: categoryArrayList){
-            category.setProducts(myDbHelper.readProducts(category.getID()));
+            category.setProducts(mDatabaseProdsAndCats.readProducts(category.getID()));
         }
         mCategories = new Category[categoryArrayList.size()];
         mCategories = categoryArrayList.toArray(mCategories);
@@ -56,15 +56,15 @@ public class CategoriesActivity extends AppCompatActivity {
     private void manageDatabase() {
         try {
             // check if database exists in app path, if not copy it from assets
-            myDbHelper.create();
+            mDatabaseProdsAndCats.create();
         }
         catch (IOException ioe) {
             throw new Error("Unable to create database");
         }
         try {
             // open the database
-            myDbHelper.open();
-            myDbHelper.getWritableDatabase();
+            mDatabaseProdsAndCats.open();
+            mDatabaseProdsAndCats.getWritableDatabase();
         }
         catch (SQLException sqle) {
             throw sqle;
@@ -74,7 +74,7 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        myDbHelper.close();
+        mDatabaseProdsAndCats.close();
         this.finish();
     }
 }

@@ -21,7 +21,7 @@ import com.martin.categoriasyproductos.model.Product;
  * Created by MartinC on 6/2/2017.
  */
 
-public class DatabaseOpenHelper extends SQLiteOpenHelper {
+public class DatabaseProdsAndCats extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "CatsAndProds.db";
     private static final int DATABASE_VERSION = 1;
@@ -47,7 +47,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private static String DATABASE_PATH;
 
     /** constructor */
-    public DatabaseOpenHelper(Context ctx) {
+    public DatabaseProdsAndCats(Context ctx) {
         super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = ctx;
         DATABASE_PATH = context.getFilesDir().getParentFile().getPath()

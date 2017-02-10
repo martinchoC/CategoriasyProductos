@@ -2,7 +2,7 @@ package com.martin.categoriasyproductos.ui;
 
 import com.martin.categoriasyproductos.R;
 import com.martin.categoriasyproductos.model.Product;
-import com.martin.categoriasyproductos.sqlite.DatabaseOpenHelper;
+import com.martin.categoriasyproductos.sqlite.DatabaseProdsAndCats;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -36,7 +36,7 @@ public class DetailedProductActivity extends AppCompatActivity {
     private int mCategoryId;
     boolean doubleBackToExitPressedOnce;
     String mNewProduct;
-    private DatabaseOpenHelper myDbHelper;
+    private DatabaseProdsAndCats mDatabaseProdsAndCats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class DetailedProductActivity extends AppCompatActivity {
         mProductID = intent.getStringExtra("PRODID");
         mNewProduct = intent.getStringExtra("NEW");
 
-        myDbHelper = new DatabaseOpenHelper(this);
+        mDatabaseProdsAndCats = new DatabaseProdsAndCats(this);
         manageDatabase();
 
         hideKeyboard(mCreation);
@@ -62,7 +62,7 @@ public class DetailedProductActivity extends AppCompatActivity {
         dateClickListener(mExpiration);
 
         if(mNewProduct.equals("false")){
-            Product product = myDbHelper.getProduct(mProductID);
+            Product product = mDatabaseProdsAndCats.getProduct(mProductID);
             populateFields(product);
         }
     }
@@ -70,15 +70,15 @@ public class DetailedProductActivity extends AppCompatActivity {
     private void manageDatabase() {
         try {
             // check if database exists in app path, if not copy it from assets
-            myDbHelper.create();
+            mDatabaseProdsAndCats.create();
         }
         catch (IOException ioe) {
             throw new Error("Unable to create database");
         }
         try {
             // open the database
-            myDbHelper.open();
-            myDbHelper.getWritableDatabase();
+            mDatabaseProdsAndCats.open();
+            mDatabaseProdsAndCats.getWritableDatabase();
         }
         catch (SQLException sqle) {
             throw sqle;
@@ -144,10 +144,10 @@ public class DetailedProductActivity extends AppCompatActivity {
                 }
                 {
                     if (mNewProduct.equals("true")) {
-                        myDbHelper.createProduct(product, mCategoryId);
+                        mDatabaseProdsAndCats.createProduct(product, mCategoryId);
                         Toast.makeText(this, "Product created successfully", Toast.LENGTH_SHORT).show();
                     } else {
-                        myDbHelper.updateProduct(product, mCategoryId);
+                        mDatabaseProdsAndCats.updateProduct(product, mCategoryId);
                         Toast.makeText(this, "Product updated successfully", Toast.LENGTH_SHORT).show();
                     }
                 }
